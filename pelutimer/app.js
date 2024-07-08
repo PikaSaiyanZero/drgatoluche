@@ -18,11 +18,15 @@ function loadTimers() {
         const timerElement = createTimerElement(timer, index);
         timersContainer.appendChild(timerElement);
     });
+    updateRatios();
 }
 
 function createTimerElement(timer, index) {
     const timerElement = document.createElement('div');
     timerElement.classList.add('timer');
+
+    const timerHeader = document.createElement('div');
+    timerHeader.classList.add('timer-header');
 
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
@@ -74,19 +78,27 @@ function createTimerElement(timer, index) {
 
     const toggleButton = document.createElement('button');
     toggleButton.classList.add('timer-toggle');
-    toggleButton.textContent = timer.interval ? 'Stop' : 'Start';
+    toggleButton.innerHTML = timer.interval ?
+        '<span style="color: darkred;">◼</span>' : '▶';
     toggleButton.addEventListener('click', () => toggleTimer(index));
 
     const removeButton = document.createElement('button');
     removeButton.classList.add('timer-remove');
-    removeButton.textContent = 'X';
+    removeButton.textContent = '🞮';
     removeButton.style.display = timers.length > 2 ? 'block' : 'none';
     removeButton.addEventListener('click', () => removeTimer(index));
 
-    timerElement.appendChild(nameInput);
-    timerElement.appendChild(display);
-    timerElement.appendChild(toggleButton);
-    timerElement.appendChild(removeButton);
+    const ratiosContainer = document.createElement('div');
+    ratiosContainer.classList.add('ratios');
+    ratiosContainer.id = `ratios-${index}`;
+
+    timerHeader.appendChild(nameInput);
+    timerHeader.appendChild(display);
+    timerHeader.appendChild(toggleButton);
+    timerHeader.appendChild(removeButton);
+
+    timerElement.appendChild(timerHeader);
+    timerElement.appendChild(ratiosContainer);
 
     return timerElement;
 }
@@ -135,18 +147,19 @@ function removeTimer(index) {
 }
 
 function updateRatios() {
-    const ratiosContainer = document.getElementById('ratios');
-    ratiosContainer.innerHTML = '';
-    for (let i = 0; i < timers.length; i++) {
-        for (let j = 0; j < timers.length; j++) {
-            if (i !== j) {
+    timers.forEach((timer, index) => {
+        const ratiosContainer = document.getElementById(`ratios-${index}`);
+        ratiosContainer.innerHTML = '';
+        timers.forEach((otherTimer, otherIndex) => {
+            if (index !== otherIndex) {
                 const ratioElement = document.createElement('div');
-                const ratio = timers[i].time / timers[j].time || 0;
-                ratioElement.textContent = `${timers[i].name} is ${ratio.toFixed(2)} of ${timers[j].name}`;
+                const ratio = timer.time / otherTimer.time || 0;
+                const roundedRatio = Math.round(ratio / 0.25) * 0.25;
+                ratioElement.innerHTML = `<strong>${roundedRatio.toFixed(2)}</strong>x ${otherTimer.name}`;
                 ratiosContainer.appendChild(ratioElement);
             }
-        }
-    }
+        });
+    });
 }
 
 function saveTimersToStorage() {
