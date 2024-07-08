@@ -30,7 +30,13 @@ body {
 }
 
 .timer-display {
-    width: 100px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.timer-input {
+    width: 35px;
     text-align: center;
 }
 

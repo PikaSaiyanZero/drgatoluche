@@ -35,7 +35,42 @@ function createTimerElement(timer, index) {
 
     const display = document.createElement('div');
     display.classList.add('timer-display');
-    display.textContent = formatTime(timer.time);
+
+    const hoursInput = document.createElement('input');
+    hoursInput.type = 'number';
+    hoursInput.classList.add('timer-input');
+    hoursInput.value = Math.floor(timer.time / 3600).toString().padStart(2, '0');
+    hoursInput.addEventListener('change', () => {
+        timer.time = (parseInt(hoursInput.value, 10) * 3600) + (parseInt(minutesInput.value, 10) * 60) + parseInt(secondsInput.value, 10);
+        updateRatios();
+        saveTimersToStorage();
+    });
+
+    const minutesInput = document.createElement('input');
+    minutesInput.type = 'number';
+    minutesInput.classList.add('timer-input');
+    minutesInput.value = Math.floor((timer.time % 3600) / 60).toString().padStart(2, '0');
+    minutesInput.addEventListener('change', () => {
+        timer.time = (parseInt(hoursInput.value, 10) * 3600) + (parseInt(minutesInput.value, 10) * 60) + parseInt(secondsInput.value, 10);
+        updateRatios();
+        saveTimersToStorage();
+    });
+
+    const secondsInput = document.createElement('input');
+    secondsInput.type = 'number';
+    secondsInput.classList.add('timer-input');
+    secondsInput.value = (timer.time % 60).toString().padStart(2, '0');
+    secondsInput.addEventListener('change', () => {
+        timer.time = (parseInt(hoursInput.value, 10) * 3600) + (parseInt(minutesInput.value, 10) * 60) + parseInt(secondsInput.value, 10);
+        updateRatios();
+        saveTimersToStorage();
+    });
+
+    display.appendChild(hoursInput);
+    display.appendChild(document.createTextNode(':'));
+    display.appendChild(minutesInput);
+    display.appendChild(document.createTextNode(':'));
+    display.appendChild(secondsInput);
 
     const toggleButton = document.createElement('button');
     toggleButton.classList.add('timer-toggle');
@@ -54,13 +89,6 @@ function createTimerElement(timer, index) {
     timerElement.appendChild(removeButton);
 
     return timerElement;
-}
-
-function formatTime(seconds) {
-    const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
-    const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-    const s = (seconds % 60).toString().padStart(2, '0');
-    return `${h}:${m}:${s}`;
 }
 
 function toggleTimer(index) {
