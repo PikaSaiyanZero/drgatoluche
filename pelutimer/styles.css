@@ -1,142 +1,55 @@
-/* styles.css */
-
-/* Color Palette Variables */
-:root {
-    --primary-color: #f6f6f6; /* Button background */
-    --primary-dark-color: #000000; /* Text on buttons */
-    --button-hover-color: #e0e0e0; /* Light gray on hover */
-    --button-active-color: #bdbdbd; /* Darker gray on click */
-}
-
-/* Body and General Styles */
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
-#timers-container {
+#app {
+    width: 80%;
+    max-width: 600px;
+    margin-top: 20px;
+}
+
+#timers {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    transition: all 0.3s ease-in-out; /* Smooth transition for layout changes */
+    flex-direction: column;
+    gap: 10px;
 }
 
 .timer {
-    margin: 20px;
-    padding: 20px;
-    border-radius: 10px;
-    width: 200px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out; /* Smooth transition for size and position changes */
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.timer-title {
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    border: none; /* Remove any border */
-    background: none; /* Remove any background */
-    padding: 0; /* Remove padding */
-    outline: none; /* Remove focus outline */
-    text-decoration: none; /* Remove underline */
-    border-bottom: none; /* Ensure no bottom border */
+.timer-name {
+    flex: 1;
 }
 
-/* CSS Reset for all input elements */
-input {
-    border: none; /* Remove any border */
-    background: none; /* Remove any background */
-    padding: 0; /* Remove padding */
-    outline: none; /* Remove focus outline */
-    font-family: inherit; /* Inherit font family */
-    font-size: inherit; /* Inherit font size */
-    color: inherit; /* Inherit text color */
-    text-decoration: none; /* Remove any text decoration */
-}
-
-/* Specific styling for input[type="text"] */
-input[type="text"] {
-    border-bottom: 2px solid #ccc; /* Optional: Customize bottom border */
-    padding: 5px;
-    width: 80%;
+.timer-display {
+    width: 100px;
     text-align: center;
-    margin-bottom: 10px;
 }
 
-.timer input[type="text"] {
-    font-size: 1.2em;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    padding: 5px;
-    width: 80%;
-    text-align: center;
-    margin-bottom: 10px;
+.timer-toggle, .timer-remove, #add-timer {
+    padding: 5px 10px;
 }
 
-.timer input[type="text"]:focus {
-    outline: none;
-    border-bottom: 2px solid #666;
+.timer-remove {
+    display: none;
 }
 
-.timer button {
-    background-color: inherit;
-    border: 2px solid white; /* White border */
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+#add-timer {
+    margin-top: 10px;
 }
 
-.timer button:hover {
-    background-color: var(--button-hover-color); /* Transparent white background on hover */
+h2 {
+    margin-top: 20px;
 }
 
-.timer button:active {
-    background-color: var(--button-active-color); /* Semi-transparent white background on click */
-}
-
-.timer button:focus {
-    outline: none;
-}
-
-.timer button:not(:last-child) {
-    margin-right: 5px;
-}
-
-/* Style for Add Timer and Remove Timer buttons */
-#add-timer-btn, #remove-timer-btn {
-    position: relative;
-    top: 0;
-    background-color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-    color: var(--primary-dark-color);
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out; /* Smooth transition for position changes */
-}
-
-#add-timer-btn:hover, #remove-timer-btn:hover {
-    background-color: var(--button-hover-color);
-}
-
-#add-timer-btn:active, #remove-timer-btn:active {
-    background-color: var(--button-active-color);
-}
-
-#add-timer-btn:focus, #remove-timer-btn:focus {
-    outline: none;
+#ratios {
+    margin-top: 10px;
 }
