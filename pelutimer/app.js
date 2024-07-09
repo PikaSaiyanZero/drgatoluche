@@ -1,15 +1,73 @@
+// Array of all timers.
 let timers = [
     { name: 'Timer 1', time: 0, interval: null },
     { name: 'Timer 2', time: 0, interval: null }
 ];
+// The timer that is currently running.
 let runningTimer = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     loadTimersFromStorage();
     loadTimers();
+
     document.getElementById('add-timer').addEventListener('click', addTimer);
     document.getElementById('reset-data').addEventListener('click', resetData);
+
+    document.getElementById('export-data').addEventListener('click', exportData);
+    document.getElementById('import-data').addEventListener('click', importData);
 });
+
+function importData() {
+    const timerInput = document.getElementById('inputJSON').value;
+    
+    if (timerInput) {
+        console.log(timerInput);
+        importTimers(timerInput);
+    } else {
+        console.error('No timers input provided.');
+    }
+}
+
+function exportData() {
+    // Stringify timer data
+    const timerData = JSON.stringify(timers);
+    // Set the value of the input field 'inputJSON' to the JSON string
+    document.getElementById('inputJSON').value = timerData;
+}
+
+
+// Load from input field to migrate between devices
+function loadTimersFromInput() {
+    console.log("alive");
+    console.log(timerInput);
+    const timerInput = document.getElementById('inputJSON').value;
+    if (timerInput) {
+        importTimers(timerInput);
+        loadTimers();
+        updateRatios();
+        saveTimersToStorage();
+    } else {
+        console.error('No timers input provided.');
+    }
+}
+
+// Separated import function to be usable with both import methods.
+function importTimers(inputTimers) {
+    timers = JSON.parse(inputTimers);
+    timers.forEach(timer => timer.interval = null);
+}
+
+// Load from local storage to survive refreshing
+function loadTimersFromStorage() {
+    const storedTimers = localStorage.getItem('timers');
+    if (storedTimers) {
+        importTimers(storedTimers)
+    }
+}
+
+function saveTimersToStorage() {
+    localStorage.setItem('timers', JSON.stringify(timers));
+}
 
 function loadTimers() {
     const timersContainer = document.getElementById('timers');
@@ -162,17 +220,9 @@ function updateRatios() {
     });
 }
 
-function saveTimersToStorage() {
-    localStorage.setItem('timers', JSON.stringify(timers));
-}
 
-function loadTimersFromStorage() {
-    const storedTimers = localStorage.getItem('timers');
-    if (storedTimers) {
-        timers = JSON.parse(storedTimers);
-        timers.forEach(timer => timer.interval = null);
-    }
-}
+
+
 
 function resetData() {
     localStorage.removeItem('timers');
